@@ -1,13 +1,33 @@
-:root {
+/* University of Minnesota Theme */
+.theme-umn {
+  --primary: #7a0019;
+  --primary-dark: #5d0014;
+  --secondary: #ffcc33;
+  --accent: #ffd75f;
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #f8f9fa;
+  --text: #2c2c2c;
+  --text-light: #666666;
+  --border: #e0e0e0;
+  --success: #28a745;
+  --warning: #ffc107;
+  --error: #dc3545;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* University of Wisconsin-Madison Theme */
+.theme-uw-madison {
+  --primary: #c5050c;
+  --primary-dark: #a00409;
+  --secondary: #ffffff;
+  --accent: #f5f5f5;
+  --background: #ffffff;
+  --surface: #f8f9fa;
+  --text: #2c2c2c;
+  --text-light: #666666;
+  --border: #e0e0e0;
+  --success: #28a745;
+  --warning: #ffc107;
+  --error: #dc3545;
 }
 
 html,
@@ -17,11 +37,12 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--text);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
 * {
@@ -35,8 +56,58 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, select {
+  font-family: inherit;
+  outline: none;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--accent);
+}
+
+.card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }

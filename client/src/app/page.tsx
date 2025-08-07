@@ -1,95 +1,124 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useMemo } from 'react';
+import { dummyTextbooks, Textbook } from './data/textbooks';
+import TextbookCard from './components/TextbookCard';
+import SearchFilters, { FilterOptions } from './components/SearchFilters';
 import styles from "./page.module.css";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState<FilterOptions>({
+    condition: [],
+    priceRange: [0, 300],
+    course: ''
+  });
+  const [selectedTextbook, setSelectedTextbook] = useState<Textbook | null>(null);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const filteredTextbooks = useMemo(() => {
+    return dummyTextbooks.filter(book => {
+      const matchesSearch = searchQuery === '' || 
+        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.course.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesCondition = filters.condition.length === 0 || 
+        filters.condition.includes(book.condition);
+      
+      const matchesPrice = book.price >= filters.priceRange[0] && 
+        book.price <= filters.priceRange[1];
+      
+      const matchesCourse = filters.course === '' ||
+        book.course.toLowerCase().includes(filters.course.toLowerCase());
+      
+      return matchesSearch && matchesCondition && matchesPrice && matchesCourse;
+    });
+  }, [searchQuery, filters]);
+
+  if (selectedTextbook) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.bookDetail}>
+          <button 
+            onClick={() => setSelectedTextbook(null)}
+            className="btn btn-secondary"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+            ← Back to Browse
+          </button>
+          
+          <div className={styles.detailContent}>
+            <div className={styles.detailImage}>
+              <div className={styles.detailPlaceholder}>📚</div>
+            </div>
+            
+            <div className={styles.detailInfo}>
+              <h1>{selectedTextbook.title}</h1>
+              <p className={styles.detailAuthor}>by {selectedTextbook.author}</p>
+              <p className={styles.detailCourse}>{selectedTextbook.course}</p>
+              <p className={styles.detailEdition}>{selectedTextbook.edition}</p>
+              <p className={styles.detailISBN}>ISBN: {selectedTextbook.isbn}</p>
+              
+              <div className={styles.detailCondition}>
+                Condition: <span className={styles.conditionBadge}>{selectedTextbook.condition.replace('-', ' ').toUpperCase()}</span>
+              </div>
+              
+              <div className={styles.detailPrice}>${selectedTextbook.price}</div>
+              
+              <div className={styles.detailSeller}>
+                <p><strong>Seller:</strong> {selectedTextbook.seller}</p>
+              </div>
+              
+              <div className={styles.detailDescription}>
+                <h3>Description</h3>
+                <p>{selectedTextbook.description}</p>
+              </div>
+              
+              <div className={styles.detailActions}>
+                <button className="btn btn-primary">Contact Seller</button>
+                <button className="btn btn-secondary">Add to Watchlist</button>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.hero}>
+        <h1>Find Your Perfect Textbook</h1>
+        <p>Buy and sell textbooks with fellow students at your university</p>
+      </div>
+      
+      <SearchFilters 
+        onSearch={setSearchQuery}
+        onFilterChange={setFilters}
+      />
+      
+      <div className={styles.results}>
+        <div className={styles.resultsHeader}>
+          <h2>Available Textbooks</h2>
+          <span className={styles.resultCount}>{filteredTextbooks.length} books found</span>
+        </div>
+        
+        <div className={styles.textbookGrid}>
+          {filteredTextbooks.map(textbook => (
+            <TextbookCard 
+              key={textbook.id} 
+              textbook={textbook}
+              onClick={() => setSelectedTextbook(textbook)}
+            />
+          ))}
+        </div>
+        
+        {filteredTextbooks.length === 0 && (
+          <div className={styles.noResults}>
+            <p>No textbooks found matching your criteria.</p>
+            <p>Try adjusting your search or filters.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

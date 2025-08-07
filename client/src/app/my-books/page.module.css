@@ -1,0 +1,372 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header div {
+  flex: 1;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+}
+
+.header p {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.emptyState h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.emptyState p {
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.statCard h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.booksSection {
+  margin-top: 3rem;
+}
+
+.booksSection h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.booksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.bookWrapper {
+  position: relative;
+}
+
+.bookActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.bookActions button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.deleteBtn {
+  color: var(--error) !important;
+}
+
+.deleteBtn:hover {
+  background: var(--error) !important;
+  color: white !important;
+}
+
+/* Book Detail Styles */
+.bookDetail {
+  margin-bottom: 2rem;
+}
+
+.detailContent {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.detailImage {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailPlaceholder {
+  font-size: 6rem;
+  opacity: 0.5;
+}
+
+.detailInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detailInfo h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text);
+  margin: 0;
+  flex: 1;
+}
+
+.listingStatus {
+  white-space: nowrap;
+}
+
+.statusActive {
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.detailAuthor {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.detailCourse {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0;
+}
+
+.detailEdition, .detailISBN {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.detailCondition {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.conditionBadge {
+  background: var(--success);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.detailPrice {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.detailDescription {
+  margin-top: 1rem;
+}
+
+.detailDescription h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.detailDescription p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.listingStats {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stat {
+  text-align: center;
+}
+
+.statLabel {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.statValue {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.detailActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modalContent h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--text);
+  margin: 0 0 1rem 0;
+}
+
+.modalContent p {
+  color: var(--text-light);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .booksGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .detailContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .detailImage {
+    height: 250px;
+  }
+  
+  .detailHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .listingStats {
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  
+  .detailActions {
+    flex-direction: column;
+  }
+  
+  .modalContent {
+    padding: 1.5rem;
+  }
+  
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+}
