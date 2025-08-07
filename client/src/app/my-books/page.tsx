@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Textbook } from '../data/textbooks';
 import TextbookCard from '../components/TextbookCard';
+import AuthGuard from '../components/AuthGuard';
 import styles from './page.module.css';
 
 // Simulate user's books (subset of dummy data)
@@ -126,7 +127,8 @@ export default function MyBooks() {
   }
 
   return (
-    <div className={styles.container}>
+    <AuthGuard>
+      <div className={styles.container}>
       <div className={styles.header}>
         <div>
           <h1>My Books</h1>
@@ -215,6 +217,7 @@ export default function MyBooks() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Textbook } from '../data/textbooks';
+import AuthGuard from '../components/AuthGuard';
 import styles from './page.module.css';
 
 export default function Sell() {
@@ -77,7 +78,8 @@ export default function Sell() {
   }
 
   return (
-    <div className={styles.container}>
+    <AuthGuard>
+      <div className={styles.container}>
       <div className={styles.header}>
         <h1>Sell Your Textbook</h1>
         <p>List your textbook and connect with students who need it</p>
@@ -230,6 +232,7 @@ export default function Sell() {
           <Link href="/" className="btn btn-secondary">Cancel</Link>
         </div>
       </form>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

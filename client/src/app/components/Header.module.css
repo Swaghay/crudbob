@@ -9,11 +9,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .logo h1 {
@@ -33,6 +32,7 @@
   display: flex;
   gap: 2rem;
   align-items: center;
+  justify-content: center;
 }
 
 .navLink {
@@ -51,25 +51,64 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .themeToggle {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
+  background: var(--secondary) !important;
+  color: var(--primary) !important;
+  border: none !important;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .themeToggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: none;
+  background: var(--accent) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.userMenu {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.welcomeText {
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.signInButton {
+  background: var(--secondary) !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease !important;
+}
+
+.signInButton:hover {
+  background: var(--accent) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 @media (max-width: 768px) {
   .container {
+    display: flex;
     flex-direction: column;
     text-align: center;
+    gap: 1rem;
   }
   
   .nav {
@@ -80,5 +119,21 @@
   
   .actions {
     order: 2;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .welcomeText {
+    font-size: 0.8rem;
+  }
+  
+  .signInButton {
+    font-size: 0.875rem !important;
+    padding: 0.625rem 1.25rem !important;
+  }
+  
+  .themeToggle {
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
   }
 }
