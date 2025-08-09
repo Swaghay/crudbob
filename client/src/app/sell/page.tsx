@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Textbook } from '../data/textbooks';
+import { Textbook } from '../types/textbook';
 import AuthGuard from '../components/AuthGuard';
 import styles from './page.module.css';
 

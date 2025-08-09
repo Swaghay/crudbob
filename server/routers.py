@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from auth_utils import hash_password
 
 import models, schemas
 from database import get_db
@@ -54,15 +55,18 @@ def delete_listing(listing_id: int, db: Session = Depends(get_db)):
 # ---------- USERS ----------
 @router.post("/api/users", response_model=schemas.UserWithID)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.username == user.username).first()
-    if db_user:
-        raise HTTPException(status_code=400, detail="Username already exists")
+    if db.query(models.User).filter(models.User.username == user.username).first():
+        raise HTTPException(status_code=409, detail="Username already exists")
+    if db.query(models.User).filter(models.User.email == user.email).first():
+        raise HTTPException(status_code=409, detail="Email already registered")
 
-    db_email = db.query(models.User).filter(models.User.email == user.email).first()
-    if db_email:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    hashed_pw = hash_password(user.password)  
 
-    db_user = models.User(**user.model_dump())
+    db_user = models.User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed_pw
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -85,7 +89,12 @@ def update_user(user_id: int, updated: schemas.UserUpdate, db: Session = Depends
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    for key, value in updated.model_dump(exclude_unset=True).items():
+    update_data = updated.model_dump(exclude_unset=True)
+
+    if "password" in update_data:
+        update_data["hashed_password"] = hash_password(update_data.pop("password"))
+
+    for key, value in update_data.items():
         setattr(db_user, key, value)
 
     db.commit()

@@ -47,7 +47,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    hashed_password: str
+    password: str
 
 
 class UserWithID(UserBase):
@@ -60,7 +60,7 @@ class UserWithID(UserBase):
 class UserUpdate(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
-    hashed_password: Optional[str] = None
+    password: Optional[str] = None
 
     class Config:
         orm_mode = True

@@ -1,18 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { UserWithID } from '../types/user';
+import * as userServices from '../services/userServices';
 
 interface AuthContextType {
-  user: User | null;
+  user: UserWithID | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<boolean>;
-  signUp: (email: string, password: string, name: string) => Promise<boolean>;
+  signUp: (email: string, password: string, name: string) => Promise<{ success: boolean; error: string | null }>;
   signOut: () => void;
   isAuthenticated: boolean;
 }
@@ -20,10 +16,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserWithID | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing session on mount
+  // Check localStorage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem('bookbay-user');
     if (savedUser) {
@@ -34,50 +30,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    // Simple validation - any password over 8 characters
-    if (password.length <= 8) {
+    try {
+      const response = await userServices.signIn(email, password);
+      const loggedInUser = response.data;
+      setUser(loggedInUser);
+      localStorage.setItem('bookbay-user', JSON.stringify(loggedInUser));
+      setIsLoading(false);
+      return true;
+    } catch (error) {
       setIsLoading(false);
       return false;
     }
-
-    const mockUser: User = {
-      id: '1',
-      email,
-      name: email.split('@')[0] // Use email prefix as name
-    };
-
-    setUser(mockUser);
-    localStorage.setItem('bookbay-user', JSON.stringify(mockUser));
-    setIsLoading(false);
-    return true;
   };
 
-  const signUp = async (email: string, password: string, name: string): Promise<boolean> => {
+  const signUp = async (email: string, password: string, name: string): Promise<{success: boolean; error: string | null}> => {
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Simple validation - any password over 8 characters
-    if (password.length <= 8) {
+    try {
+      const response = await userServices.signUp(email, password, name);
+      const newUser = response.data;
+      setUser(newUser);
+      localStorage.setItem('bookbay-user', JSON.stringify(newUser));
       setIsLoading(false);
-      return false;
+      return { success: true, error: null };
+      } catch (error: any) {
+      setIsLoading(false);
+
+      if (error.response && error.response.data && error.response.data.detail) {
+        return { success: false, error: error.response.data.detail };
+      }
+
+      return { success: false, error: 'Unknown error occurred' };
     }
-
-    const mockUser: User = {
-      id: Date.now().toString(),
-      email,
-      name
-    };
-
-    setUser(mockUser);
-    localStorage.setItem('bookbay-user', JSON.stringify(mockUser));
-    setIsLoading(false);
-    return true;
   };
 
   const signOut = () => {
@@ -85,17 +68,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('bookbay-user');
   };
 
-  const value = {
-    user,
-    isLoading,
-    signIn,
-    signUp,
-    signOut,
-    isAuthenticated: !!user
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        signIn,
+        signUp,
+        signOut,
+        isAuthenticated: !!user,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -103,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

@@ -1,20 +1,24 @@
-import { Textbook } from '../data/textbooks';
+import { TextbookListing, ConditionEnum } from '../types/textbook';
+import { getConditionLabel } from '../utils/textbookUtils';
 import styles from './TextbookCard.module.css';
 
 interface TextbookCardProps {
-  textbook: Textbook;
+  textbook: TextbookListing;
   onClick?: () => void;
 }
 
-export default function TextbookCard({ textbook, onClick }: TextbookCardProps) {
-  const conditionColors = {
-    'new': 'var(--success)',
-    'like-new': '#17a2b8',
-    'good': 'var(--warning)',
-    'fair': '#fd7e14',
-    'poor': 'var(--error)'
-  };
+function getConditionColor(condition: ConditionEnum): string {
+  switch (condition) {
+    case ConditionEnum.New: return 'var(--success)';
+    case ConditionEnum.LikeNew: return '#17a2b8';
+    case ConditionEnum.Good: return 'var(--warning)';
+    case ConditionEnum.Fair: return '#fd7e14';
+    case ConditionEnum.Poor: return 'var(--error)';
+    default: return '#ccc';
+  }
+}
 
+export default function TextbookCard({ textbook, onClick }: TextbookCardProps) {
   return (
     <div className={`card ${styles.textbookCard}`} onClick={onClick}>
       <div className={styles.imageContainer}>
@@ -28,14 +32,14 @@ export default function TextbookCard({ textbook, onClick }: TextbookCardProps) {
           <h3 className={styles.title}>{textbook.title}</h3>
           <div 
             className={styles.condition}
-            style={{ backgroundColor: conditionColors[textbook.condition] }}
+            style={{ backgroundColor: getConditionColor(textbook.condition) }}
           >
-            {textbook.condition.replace('-', ' ').toUpperCase()}
+            {getConditionLabel(textbook.condition)}
           </div>
         </div>
         
         <p className={styles.author}>by {textbook.author}</p>
-        <p className={styles.course}>{textbook.course}</p>
+        <p className={styles.course}>{textbook.course_code}</p>
         <p className={styles.edition}>{textbook.edition}</p>
         
         <div className={styles.footer}>

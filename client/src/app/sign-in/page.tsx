@@ -72,17 +72,20 @@ export default function SignIn() {
       let success = false;
       
       if (isSignUp) {
-        success = await signUp(formData.email, formData.password, formData.name);
+        const result = await signUp(formData.email, formData.password, formData.name);
+        success = result.success;
+        if (!result.success && result.error) {
+          setErrors({ general: result.error });
+        }
       } else {
         success = await signIn(formData.email, formData.password);
       }
 
       if (success) {
         router.push('/');
-      } else {
-        setErrors({ password: 'Password must be longer than 8 characters' });
       }
     } catch (error) {
+      console.error(error);
       setErrors({ general: 'Something went wrong. Please try again.' });
     } finally {
       setIsSubmitting(false);
